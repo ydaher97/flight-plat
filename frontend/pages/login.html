@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+    <h2>Login Form</h2> 
+    <form id="loginForm"> 
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"  required minlength="8">
+            <div id="password-strength-meter">
+                Password Strength: <span id="password-strength">Weak</span>
+            </div>
+        </div>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="isAdmin">Admin:</label>
+            <input type="checkbox" id="isAdmin" name="isAdmin">
+        </div>
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+
+    <script src="../javascript/login.js"></script>
+</body>
+</html>

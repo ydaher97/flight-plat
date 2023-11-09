@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/home.css">
+</head>
+<body>
+    <div class="nav">
+        <button class="my-flights-button"><a href="../pages/history.html">My Flights</a></button>
+        <p id="name"></p>
+        <button class="logout-button" onclick="logout()">Logout</button>
+
+    </div>
+    
+    <div class="add">
+        <button id="addFlightButton">Add Flight</button>
+        <div id="formWindow" class="form-window" style="display: none;">
+            <button id="closeButton" class="close-button">X</button>
+            <form id="addFlightForm" style="display: none;">
+                <label for="from">From:</label>
+                <input type="text" id="fromInput" required>
+                <label for="to">To:</label>
+                <input type="text" id="toInput" required>
+                <label for="price">Price:</label>
+                <input type="number" id="priceInput" required>
+                <label for="departDate">Departure Date:</label>
+                <input type="date" id="departDateInput" required>
+                <label for="returnDate">Return Date:</label>
+                <input type="date" id="returnDateInput" required>
+                <button type="submit">Add Flight</button>
+            </form>
+        </div>
+    </div>
+    
+  
+
+    <h1 style="text-align: center;">Flight Search</h1>
+    <form id="apiParamsForm">
+        <input type="text" name="fromId" placeholder="From " id="fromId">
+        <input type="text" name="toId" placeholder="To " id="toId">
+        <input type="date" name="departDate" placeholder="Depart Date" id="dateId">
+        <button type="submit">Search Flights</button>
+    </form>
+    <!-- <div id="results"></div> -->
+
+    <div class="sort-div">
+        <input type="search" id="search-bar" placeholder="Fast search">
+
+        <select name="sort" id="sort-flights">
+            <option value="none">none</option>
+            <option value="price">price</option>
+           
+        </select>
+    </div>
+
+    <ul class="flight-list" id="flight-list">
+    
+    </ul>
+
+
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        
+        <ul id="cart-items">
+           
+        </ul>
+        <button id="bookButton" class="bookFlight active">Book Flights</button>
+    </div>
+    <script src="../javascript/home.js"></script>
+</body>
+</html>
