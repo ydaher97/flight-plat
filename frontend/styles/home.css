@@ -1,9 +1,13 @@
 body{
-    margin: 0 10px 10px 10px;
+    margin: 0 ;
+}
+
+main{
+    padding: 0 7%;
 }
 .flight-list {
     margin: 10px;
-    border: 1px solid gray;
+   
     list-style: none;
     padding: 21px 0 0 0;
     display: flex;
@@ -21,6 +25,8 @@ body{
     text-align: center;
     padding: 20px;
     margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 
@@ -34,6 +40,14 @@ body{
     display: none;
 }
 
+.from-to-div{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.right-div{
+    border-left: dashed;
+}
 
 .addToCart{
     background-color: #007bff;
@@ -57,15 +71,17 @@ body{
 .nav {
     background-color: #333;
     color: #fff;
-    padding: 10px;
+    padding: 17px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
     margin-top: 0;
+    transition: transform .5s;
 }
 
 
 .logout-button {
+    margin-left: 20px;
     background-color: #ff5733;
     color: #fff;
     padding: 10px 20px;
@@ -81,6 +97,7 @@ body{
 
 
 .my-flights-button {
+    margin-right: auto;
     background-color: #44c767;
     color: #fff;
     padding: 10px 20px;
@@ -229,18 +246,95 @@ span {
     transition: background-color 0.3s;
 }
 
+#cart{
+    /* position: absolute;
+    left: 65rem;
+    right: 10px;
+    height: 80vh;
+    top: 70px;
+    padding: 10px; */
+    width: 400px;
+    background-color: #353432;
+    color: #eee;
+    position: fixed;
+    inset: 0 -400px 0 auto;
+    display: grid;
+    grid-template-rows:70px 1fr 70px ;
+    transition: .5s;
+}
+
+body.show-cart .nav{
+    transform: translateX(-350px);
+}
+
+
+body.show-cart #cart{
+    inset: 0 -0 0 auto;
+
+}
+
+#cart h2{
+    padding: 20px;
+    margin: 0;
+    font-weight: 300;
+}
+#cart .btn{
+    display: grid;
+    grid-template-columns: repeat(2 , 1fr);
+}
+
+.cart-icon{
+    position: relative;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 30px
+  
+
+}
+
+.cart-icon span{
+    display: flex;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: -16px;
+}
+
+svg{width: 30px;}
+
+#cart-items{
+    padding: 2px 3px;
+    overflow: auto;
+}
+
+/* #cart-items div:nth-child(2){
+    background-color: transparent;
+    color: #eee;
+} */
+
+#cart-items div:nth-child(even){
+    background-color: #130c0c;
+}
+
 #cart-items div{
    
    margin: 10px 0;
-   border: 1px solid white;
    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
    list-style: none;
    padding: 10px 0;
 }
 
 #cart-items input[type="number"]{
-    width: 30% !important;
-    margin: 0 20px ;
+    width: 9% !important;
+    margin: 0 15px ;
 }
 
 #cart-items button{
@@ -265,7 +359,7 @@ span {
     justify-content: center;
 }
 
-#apiParamsForm input[type="text"],input[type="date"] {
+#apiParamsForm input[type="text"],#apiParamsForm input[type="date"] {
   width: 13%;
   margin: 5px;
 }

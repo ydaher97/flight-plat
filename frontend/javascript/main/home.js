@@ -8,33 +8,7 @@ const cartItems = document.getElementById("cart-items");
 
 
 const flightsSearch = [
-    // {
-    //     from: "New York",
-    //     to: "Los Angeles",
-    //     price: 300,
-    //     dates: [
-    //         { departDate: new Date("2023-01-15"), returnDate: new Date("2023-01-20") },
-            
-    //     ]
-    // },
-    // {
-    //     from: "Chicago",
-    //     to: "Miami",
-    //     price: 250,
-    //     dates: [
-    //         { departDate: new Date("2023-01-10"), returnDate: new Date("2023-01-17") },
-           
-    //     ]
-    // },
-    // {
-    //     from: "San Francisco",
-    //     to: "Seattle",
-    //     price: 150,
-    //     dates: [
-    //         { departDate: new Date("2023-01-12"), returnDate: new Date("2023-01-18") },
-          
-    //     ]
-    // }
+   
 ];
 
 const myFlights = []
@@ -91,89 +65,92 @@ const getflights = async () => {
 // }
 
 
-function logout(){
-
-    localStorage.removeItem('user');
-    localStorage.removeItem('myFlights')
-    window.location.href = "../index.html";
-}
 
 
-function loadState() {
-    const savedState = localStorage.getItem('user');
-    
-    if (savedState) {
-      const gameState = JSON.parse(savedState);
-      email = gameState.email;
-      password = gameState.password;
-      name = gameState.name;
-      admin = gameState.isAdmin;
-     
-    }
 
-    if(admin === true){
-        
-    console.log("admin")
-        const add = document.querySelector('.add');
-        add.style.display = "block"
-    }
-}
-loadState()
 
-flightsSearch.forEach((flight) => {
-    const flightCard = createflightCard(flight);
-    flightList.appendChild(flightCard);
-  });
-
+let cartNum = 0
 
   function createflightCard({ from, to, flightDeals }) {
     const cardContainer = document.createElement("div");
-    cardContainer.style.width = '95%'
+    cardContainer.style.width = '70%'
+    
+
 
     flightDeals.forEach((flight) => {
+
         const listItem = document.createElement("li");
         listItem.classList.add("flight-list-item");
+        const rightDiv =  document.createElement("div");
+        const leftDiv =  document.createElement("div");
+        rightDiv.classList.add("right-div");
+        rightDiv.classList.add("left-div");
+        const fromToDiv =  document.createElement("div");
+        fromToDiv.classList.add("from-to-div");
+
+        const svgString = '<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/></svg>';
+
+        // Convert the SVG string to a DOM element
+        const parser = new DOMParser();
+        const svgElement = parser.parseFromString(svgString, 'image/svg+xml').querySelector('svg');
 
 
         const KeyElement = document.createElement("p");
         KeyElement.appendChild(document.createTextNode(` ${flight.key}`));
-        listItem.appendChild(KeyElement);
+        leftDiv.appendChild(KeyElement);
 
         const fromElement = document.createElement("p");
         const fromStrong = document.createElement("strong");
         fromStrong.textContent = "From:";
         fromElement.appendChild(fromStrong);
         fromElement.appendChild(document.createTextNode(` ${from}`));
-        listItem.appendChild(fromElement);
+        fromToDiv.appendChild(fromElement);
+
+        fromToDiv.appendChild(svgElement);
 
         const toElement = document.createElement("p");
         const toStrong = document.createElement("strong");
         toStrong.textContent = "To:";
         toElement.appendChild(toStrong);
         toElement.appendChild(document.createTextNode(` ${to}`));
-        listItem.appendChild(toElement);
+        fromToDiv.appendChild(toElement);
+        leftDiv.appendChild(fromToDiv);
+
 
         const priceElement = document.createElement("p");
         const priceStrong = document.createElement("strong");
-        priceStrong.textContent = "Price:";
+        // priceStrong.textContent = "Price:";
         priceElement.appendChild(priceStrong);
         priceElement.appendChild(document.createTextNode(` ${flight.price.units} ${flight.price.currencyCode}`));
-        listItem.appendChild(priceElement);
+        rightDiv.appendChild(priceElement);
 
 
         const addToCart = document.createElement("button");
         addToCart.classList.add("addToCart")
         addToCart.textContent = "add to cart";
         addToCart.addEventListener("click", function () {
-            addCart(flight) 
+             cartNum += 1
+            spanNum.textContent = `${cartNum}`
+            addCart(flight,from,to) 
+           
         });
-        listItem.appendChild(addToCart);
+        rightDiv.appendChild(addToCart);
+
+        listItem.appendChild(leftDiv);
+        listItem.appendChild(rightDiv);
+        
+
+
 
         cardContainer.appendChild(listItem);
     });
 
     return cardContainer;
 }
+
+// function updateCartNum() {
+//     ;
+// }
 
 function display() {
     flightList.innerHTML = '';
@@ -250,29 +227,15 @@ function formatDate(date) {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString("en-US", options);
 }
+const spanNum =document.querySelector(".cart-icon span");
 
-function retrievesUser(){
-    const UserJSON = localStorage.getItem("user")
-    if (UserJSON) {
-        const user = JSON.parse(UserJSON);
-        if(user.isAdmin){
-            userName.textContent = `${user.name} is Admin `;
-        }else{
-            userName.textContent = `${user.name} is not Admin `
-        }
-        return user;
-    } else {
-        userName.textContent = "No user found.";
-        return [];
-    }
-}
-retrievesUser()
 
-function addCart(flight) {
+function addCart(flight,from,to) {
     const divItem = document.createElement("div");
     const cartItem = document.createElement("li");
     const deleteItem = document.createElement("button");
     bookButton.disabled = false;
+    
 
     const quantityInput = document.createElement("input");
     quantityInput.type = "number";
@@ -281,15 +244,16 @@ function addCart(flight) {
 
     cartItem.cartData = {
         quantityInput: quantityInput,
-        flightPrice: flight.price,
-        from: flight.from,
-        to: flight.to,
+        flightPrice: flight.price.units,
+        from,
+        to,
 
     };
+   
 
     quantityInput.addEventListener("input", function() {
-        const totalPrice = flight.price * parseInt(quantityInput.value);
-        cartItem.textContent = `${flight.from} to ${flight.to} - Price: $${totalPrice}`;
+        const totalPrice = flight.price.units * parseInt(quantityInput.value);
+        cartItem.textContent = `${from} to ${to} - Price: $${totalPrice}`;
     });
 
     deleteItem.textContent = 'delete';
@@ -299,15 +263,18 @@ function addCart(flight) {
         deleteItem.remove();
         quantityInput.remove()
         divItem.remove()
-      });
+        cartNum -= 1
+        spanNum.textContent = `${cartNum}`
+          });
 
     
-    cartItem.textContent = `${flight.from} to ${flight.to} - Price: $${flight.price}`;
+    cartItem.textContent = `${from} to ${to} - Price: $${flight.price.units}`;
     divItem.appendChild(cartItem);
     divItem.appendChild(quantityInput);
     divItem.appendChild(deleteItem);
 
     cartItems.appendChild(divItem);
+   
 }
 
 
@@ -342,115 +309,9 @@ function addCart(flight) {
 
 
 
-//form
-  const addFlightButton = document.getElementById("addFlightButton");
-const addFlightForm = document.getElementById("addFlightForm");
-const fromInput = document.getElementById("fromInput");
-const toInput = document.getElementById("toInput");
-const priceInput = document.getElementById("priceInput");
-const departDateInput = document.getElementById("departDateInput");
-const returnDateInput = document.getElementById("returnDateInput");
-const closeButton = document.getElementById("closeButton");
-const FormWindow = document.getElementById("formWindow")
-
-addFlightButton.addEventListener("click", function () {
-    addFlightForm.style.display = "block";
-    FormWindow.style.display = "block"
-});
-
-closeButton.addEventListener("click", function () {
-    addFlightForm.style.display = "none";
-    FormWindow.style.display = "none"
-
-});
-
-addFlightForm.addEventListener("submit", function (event) {
-    event.preventDefault(); 
-
-    const from = fromInput.value;
-    const to = toInput.value;
-    const price = parseInt(priceInput.value);
-    const departDate = new Date(departDateInput.value);
-    const returnDate = new Date(returnDateInput.value);
-
-    const newFlight = {
-        from,
-        to,
-        price,
-        dates: [{ departDate, returnDate }],
-    };
-
-    
-    flightsSearch.push(newFlight);
-
-   
-    addFlightForm.reset();
-    addFlightForm.style.display = "none";
-    addFlightButton.style.display = "block";
-
-    
-    displayflights("");
-    FormWindow.style.display = "none"
-
-    
-});
 
 
 
-//book
-const bookButton = document.querySelector("#bookButton");
-bookButton.addEventListener("click", function () {
-    
-    const divItem = document.querySelector("#cart-items div");
-    const cartItems = document.querySelectorAll("#cart-items li");
-     const itemButton = document.querySelectorAll("#cart-items button");
-     const itemInput = document.querySelectorAll("#cart-items input");
-
-   if(cartItems.length === 0){
-    bookButton.disabled = false;
-   }else{
-    bookButton.disabled = true;
-
-   
-    let totalPrice = 0;
-
-    cartItems.forEach(cartItem => {
-        const quantity = parseInt(cartItem.cartData.quantityInput.value);
-        const flightPrice = cartItem.cartData.flightPrice;
-        totalPrice += flightPrice * quantity;
-
-        const bookedFlight = {
-            from: cartItem.cartData.from,
-            to: cartItem.cartData.to,
-            quantity: parseInt(cartItem.cartData.quantityInput.value),
-            total: cartItem.cartData.flightPrice,
-        }
-        myFlights.push(bookedFlight)
-        
-    });
-    
-    localStorage.setItem("myFlights", JSON.stringify(myFlights));
-    const confirmationPopup = document.createElement("div");
-    confirmationPopup.className = "confirmation-popup";
-    confirmationPopup.innerHTML = `
-        <p>Your booking is confirmed.</p>
-        <p>Total Amount to Pay: $${totalPrice}</p>
-    `;
-
-    confirmationPopup.addEventListener("click", function (event) {
-        if (event.target === confirmationPopup) {
-            confirmationPopup.remove();
-            cartItems.forEach(cartItem => cartItem.remove());
-            itemButton.forEach(cartButton => cartButton.remove());
-            itemInput.forEach(input => input.remove())
-            divItem.remove()
-        }
-    });
-
-
-    cart.appendChild(confirmationPopup);
-}
-});
 
 
 

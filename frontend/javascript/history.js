@@ -3,6 +3,8 @@ const flights = getMyFlights(); // Assuming this function retrieves your flights
 
 if (flights.length > 0) {
     const flightsContainer = document.createElement("div");
+    flightsContainer.classList.add("flight-container"); 
+
     const totalPrice = document.getElementById('total');
 
     let total =0

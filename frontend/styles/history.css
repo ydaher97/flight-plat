@@ -1,46 +1,67 @@
-
-body{
-    
+body {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
 }
 
-#my-flights{
+#my-flights {
     margin: 20px;
 }
+
 .flight-card {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     padding: 20px;
     margin: 10px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  
     display: flex;
     flex-direction: column;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
+.flight-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 .from-to {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #333;
 }
-
 
 .quantity-price {
     font-size: 16px;
     margin-top: 10px;
+    color: #555;
 }
 
-.back{
+#total {
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333;
+}
 
-        background-color: #021306;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+.back {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
 
-    
-    
+.back:hover {
+    background-color: #2184c1;
+}
+
+
+.flight-container{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
 }
